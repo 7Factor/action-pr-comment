@@ -20,5 +20,5 @@ runs:
       with:
         github-token: ${{ inputs.github-token }}
         script: |
-          const prComment = require('./pr_comment.js')
+          const prComment = require('${{ github.action_path }}/pr_comment.js')
           prComment(github, context, '${{ inputs.comment-identifier }}', '${{ inputs.comment-body }}')
