@@ -22,11 +22,12 @@ jobs:
       - name: Output version parts
         id: version-parts
         env:
-          version: ${{ steps.create-release.outputs.version }}
+          version: ${{ steps.create-release.outputs.tag_name }}
         run: |
-          echo "major=$(echo $version | cut -d. -f1)" >> $GITHUB_OUTPUT
-          echo "minor=$(echo $version | cut -d. -f2)" >> $GITHUB_OUTPUT
-          echo "patch=$(echo $version | cut -d. -f3)" >> $GITHUB_OUTPUT
+          clean_version=${version#v}
+          echo "major=$(echo $clean_version | cut -d. -f1)" >> $GITHUB_OUTPUT
+          echo "minor=$(echo $clean_version | cut -d. -f2)" >> $GITHUB_OUTPUT
+          echo "patch=$(echo $clean_version | cut -d. -f3)" >> $GITHUB_OUTPUT
 
       - name: Update major version tag
         uses: rickstaa/action-create-tag@v1
