@@ -17,8 +17,12 @@ runs:
   using: composite
   steps:
     - uses: actions/github-script@v7
+      env:
+        # Capture the stdout/stderr in env vars to get them from process in the script to avoid unescaped quote issues
+        commentIdentifier: ${{ inputs.comment-identifier }}
+        commentBody: ${{ inputs.comment-body }}
       with:
         github-token: ${{ inputs.github-token }}
         script: |
           const prComment = require('${{ github.action_path }}/pr_comment.js')
-          prComment(github, context, '${{ inputs.comment-identifier }}', '${{ inputs.comment-body }}')
+          prComment(github, context, `${process.env.commentIdentifier}`, `${process.env.commentBody}`)
