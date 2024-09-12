@@ -1,0 +1,24 @@
+name: PR Comment
+
+description: Manages a bot comment on a Pull Request
+
+inputs:
+  github-token:
+    description: The GitHub token to use
+    required: true
+  comment-identifier:
+    description: A unique string that identifies the comment
+    required: true
+  comment-body:
+    description: The body of the comment
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/github-script@v7
+      with:
+        github-token: ${{ inputs.github-token }}
+        script: |
+          const prComment = require('./pr_comment.js')
+          prComment(github, context, '${{ inputs.comment-identifier }}', '${{ inputs.comment-body }}')
