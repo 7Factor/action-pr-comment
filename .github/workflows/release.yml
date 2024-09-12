@@ -1,0 +1,43 @@
+name: Create Release Version
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release_on_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create release
+        id: create-release
+        uses: rymndhng/release-on-push-action@v0.25.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          bump_version_scheme: norelease
+          tag_prefix: v
+          release_name: "Release <RELEASE_VERSION>"
+
+      - name: Output version parts
+        id: version-parts
+        env:
+          version: ${{ steps.create-release.outputs.version }}
+        run: |
+          echo "major=$(echo $version | cut -d. -f1)" >> $GITHUB_OUTPUT
+          echo "minor=$(echo $version | cut -d. -f2)" >> $GITHUB_OUTPUT
+          echo "patch=$(echo $version | cut -d. -f3)" >> $GITHUB_OUTPUT
+
+      - name: Update major version tag
+        uses: rickstaa/action-create-tag@v1
+        with:
+          tag: v${{ steps.version-parts.outputs.major }}
+          force_push_tag: true
+          tag_exists_error: false
+
+      - name: Update minor version tag
+        uses: rickstaa/action-create-tag@v1
+        with:
+          tag: v${{ steps.version-parts.outputs.major }}.${{ steps.version-parts.outputs.minor }}
+          force_push_tag: true
+          tag_exists_error: false
