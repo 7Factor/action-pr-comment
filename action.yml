@@ -5,7 +5,7 @@ description: Manages a bot comment on a Pull Request
 inputs:
   github-token:
     description: The GitHub token to use
-    required: true
+    required: false
   comment-identifier:
     description: A unique string that identifies the comment
     required: true

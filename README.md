@@ -9,7 +9,6 @@ Just add the following step to one of your workflows:
 ```yaml
 - uses: 7Factor/action-pr-comment@v1
   with:
-    github-token: ${{ secrets.GITHUB_TOKEN }}
     comment-identifier: some-unique-identifier
     comment-body: |
       This is a comment that will be posted on the PR.
